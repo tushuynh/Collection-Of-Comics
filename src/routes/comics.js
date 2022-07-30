@@ -3,8 +3,6 @@ const router = express.Router()
 const comicController = require('../app/controllers/ComicController')
 
 router.get('/saveComics', comicController.saveComics)
-router.get('/deleteComics', comicController.deleteComics)
-router.get('/find', comicController.find)
 
 router.delete('/delete/:comicId', comicController.deleteComic)
 router.get('/delete/:comicId', comicController.showConfirmDelete)

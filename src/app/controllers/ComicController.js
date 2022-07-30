@@ -33,6 +33,7 @@ class ComicsController {
         const { comicId }= req.params
         comicSchema.findById(comicId)
             .then(comic => res.render('comics', {
+                user: getUserLocalStorage(),
                 showEditModal: 'modal-show',
                 comic: comicToObject(comic)
             }))
@@ -55,6 +56,7 @@ class ComicsController {
         const { comicId } = req.params
         comicSchema.findById(comicId)
             .then(comic => res.render('comics', {
+                user: getUserLocalStorage(),
                 showDeleteModal: 'modal-show',
                 comic: comicToObject(comic)
             }))
@@ -84,7 +86,10 @@ class ComicsController {
                     .sort({ lastRead: 1 })
                     .then(comics => {
                         comics = comicsMongooseToObject(comics)
-                        res.render('comics', { comics })
+                        res.render('comics', {
+                            user: getUserLocalStorage(),
+                            comics 
+                        })
                     })
                     .catch(next)
                 break;
@@ -97,7 +102,10 @@ class ComicsController {
                     .sort({ lastRead: 1 })
                     .then(comics => {
                         comics = comicsMongooseToObject(comics)
-                        res.render('comics', { comics })
+                        res.render('comics', {
+                            user: getUserLocalStorage(),
+                            comics 
+                        })
                     })
                     .catch(next)
                 break;
@@ -116,7 +124,10 @@ class ComicsController {
                 comics = comics.filter(comic => {
                     return removeAccents(comic.name.toUpperCase()).includes(removeAccents(name.toUpperCase()))
                 })
-                res.render('comics', { comics })
+                res.render('comics', {
+                    user: getUserLocalStorage(),
+                    comics
+                })
             })
             .catch(next)
     }
@@ -150,20 +161,6 @@ class ComicsController {
         //     }
         //     res.json(arrComics)
         // })
-    }
-
-    // [GET] /comics
-    find(req, res) {
-        comicSchema.find()
-            .then(data => res.json(data))
-            .catch(err => res.json(err))
-    }
-
-    // [GET] /comics/deleteComics
-    deleteComics(req, res) {
-        comicSchema.deleteMany()
-            .then(res.json({ Message: "Deleted all comics" }))
-            .catch(err => res.json({ Error: err }))
     }
 }
 
