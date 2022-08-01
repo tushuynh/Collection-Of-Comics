@@ -35,6 +35,93 @@
             {{{body}}}
 
         </div>
+
+        <!-- Add Modal -->
+        <div class="add-modal modal-wrapper">
+            <div class="modal">
+                <div class="modal-header">Add Comic</div>
+                <div class="modal-body">
+                    <form action="/comics/create" method="POST" class="form" autocomplete="off">
+                        <img src="" alt="" id="imgAddModal">
+                        <input class="form-control" type="text" name="name" placeholder="Comic's name">
+                        <input class="form-control" type="number" name="chap" placeholder="Chap">
+                        <input type="text" class="form-control" name="image" id="linkImgAddModal"
+                            placeholder="Link image of the comic">
+                        <select class="form-control" name="type" id="type">
+                            <option value="" disabled>Select type of comic</option>
+                            <option value="Manhwa">Manhwa</option>
+                            <option value="Manhua">Manhua</option>
+                            <option value="Manga">Manga</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <select class="form-control" name="status" id="status">
+                            <option value="" disabled>Select status of comic</option>
+                            <option value="none">None</option>
+                            <option value="hot">Hot</option>
+                            <option value="end">End</option>
+                            <option value="blackList">Black List</option>
+                            <option value="drop">Drop</option>
+                        </select>
+                        <button type="submit" class="btn btn-modal">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div class="edit-modal modal-wrapper {{showEditModal}}">
+            <div class="modal">
+                <div class="modal-header">Edit Comic</div>
+                <div class="modal-body">
+                    <form method="POST" action="/comics/update/{{comic._id}}?_method=PUT" class="form"
+                        autocomplete="off">
+                        <img src="{{comic.image}}" alt="" name="imgEditModal">
+                        <input class="form-control" type="text" name="name" placeholder="Comic's name"
+                            value="{{comic.name}}">
+                        <input class="form-control" type="number" name="chap" placeholder="Chap" value="{{comic.chap}}">
+                        <input type="text" class="form-control" name="image" placeholder="Link image of the comic"
+                            value="{{comic.image}}">
+                        <select class="form-control" name="type" id="type">
+                            {{#selectType comic.type}}
+                            <option value="Manhwa">Manhwa</option>
+                            <option value="Manhua">Manhua</option>
+                            <option value="Manga">Manga</option>
+                            <option value="Others">Others</option>
+                            {{/selectType}}
+                        </select>
+                        <select class="form-control" name="status" id="status">
+                            {{#selectType comic.status}}
+                            <option value="" disabled>Select status of comic</option>
+                            <option value="none">None</option>
+                            <option value="hot">Hot</option>
+                            <option value="end">End</option>
+                            <option value="blackList">Black List</option>
+                            <option value="drop">Drop</option>
+                            {{/selectType}}
+                        </select>
+                        <button type="submit" class="btn btn-modal">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{!-- Delete Modal --}}
+    <div class="delete-modal modal-wrapper {{showDeleteModal}}">
+        <div class="modal">
+            <div class="modal-body">
+                <form method="POST" action="/comics/delete/{{comic._id}}?_method=DELETE" class="form"
+                    autocomplete="off">
+                    <label for="" class="form-control">Are you sure you want to delete this comic?</label>
+                    <button type="submit" class="btn btn-modal" style="background-color: red;">Delete</button>
+                    <button type="button" class="btn btn-modal" id="btnCloseDeleteModal"
+                        style="background-color: gray;">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
     <script src="/js/home.js"></script>
 </body>
+
 </html>

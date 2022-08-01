@@ -1,135 +1,127 @@
-const comicSchema = require('../models/comic')
-const { comicsMongooseToObject, comicToObject } = require('../../util/mongoose')
-const { removeAccents, getUserLocalStorage } = require('../../util/tool')
-const fs = require('fs')
+const comicSchema = require('../models/comic');
+const {
+    comicsMongooseToObject,
+    comicToObject,
+} = require('../../util/mongoose');
+const { removeAccents, getUserLocalStorage } = require('../../util/tool');
+const fs = require('fs');
 
 class ComicsController {
-
     // [GET] /:id/comics
     showComics(req, res, next) {
-        comicSchema.find({
-            userId: getUserLocalStorage().id,
-            status: { $in: ['hot', 'none'] }
-        })
+        comicSchema
+            .find({
+                userId: getUserLocalStorage().id,
+                status: { $in: ['hot', 'none'] },
+            })
             .sort({ lastRead: 1 })
-            .then(comics => res.render('comics', {
-                user: getUserLocalStorage(),
-                comics: comicsMongooseToObject(comics)
-            }))
-            .catch(next)
+            .then((comics) =>
+                res.render('comics', {
+                    user: getUserLocalStorage(),
+                    comics: comicsMongooseToObject(comics),
+                })
+            )
+            .catch(next);
     }
 
     // [POST] /comics/create
     createComic(req, res, next) {
-        req.body.userId = getUserLocalStorage().id
-        const comic = comicSchema(req.body)
-        comic.save()
+        req.body.userId = getUserLocalStorage().id;
+        const comic = comicSchema(req.body);
+        comic
+            .save()
             .then(() => res.redirect('/comics'))
-            .catch(next)
+            .catch(next);
     }
 
     // [GET] /comics/:id/update/:comicId
     showEditComic(req, res, next) {
-        const { comicId }= req.params
-        comicSchema.findById(comicId)
-            .then(comic => res.render('comics', {
-                user: getUserLocalStorage(),
-                showEditModal: 'modal-show',
-                comic: comicToObject(comic)
-            }))
-            .catch(next)
+        const { comicId } = req.params;
+        comicSchema
+            .findById(comicId)
+            .then((comic) =>
+                res.render('comics', {
+                    user: getUserLocalStorage(),
+                    showEditModal: 'modal-show',
+                    comic: comicToObject(comic),
+                })
+            )
+            .catch(next);
     }
 
     // [PUT] /comics/:id/update/:comicId
     updateComic(req, res, next) {
-        req.body.lastRead = new Date()
-        comicSchema.updateOne(
-            { _id: req.params.comicId },
-            req.body,
-        )
+        req.body.lastRead = new Date();
+        comicSchema
+            .updateOne({ _id: req.params.comicId }, req.body)
             .then(() => res.redirect('/comics'))
-            .catch(next)
+            .catch(next);
     }
 
     // [GET] /comics/:id/delete/:comicId
     showConfirmDelete(req, res, next) {
-        const { comicId } = req.params
-        comicSchema.findById(comicId)
-            .then(comic => res.render('comics', {
-                user: getUserLocalStorage(),
-                showDeleteModal: 'modal-show',
-                comic: comicToObject(comic)
-            }))
-            .catch(next)
+        const { comicId } = req.params;
+        comicSchema
+            .findById(comicId)
+            .then((comic) =>
+                res.render('comics', {
+                    user: getUserLocalStorage(),
+                    showDeleteModal: 'modal-show',
+                    comic: comicToObject(comic),
+                })
+            )
+            .catch(next);
     }
 
     // [DELETE] /comics/:id/delete/:comicId
     deleteComic(req, res, next) {
-        comicSchema.deleteOne({ _id: req.params.comicId })
+        comicSchema
+            .deleteOne({ _id: req.params.comicId })
             .then(() => res.redirect('/comics'))
-            .catch(next)
+            .catch(next);
     }
 
     // [GET] /comics/:id/:type
-    searchComicsOfType(req, res, next) {
-        const { type } = req.params
+    searchComicsOfStatus(req, res, next) {
+        const { type } = req.params;
 
-        switch (type) {
-            case 'hot':
-            case 'end':
-            case 'blackList':
-            case 'drop':
-                comicSchema.find({
-                    userId: getUserLocalStorage().id,
-                    status: type
-                })
-                    .sort({ lastRead: 1 })
-                    .then(comics => {
-                        comics = comicsMongooseToObject(comics)
-                        res.render('comics', {
-                            user: getUserLocalStorage(),
-                            comics 
-                        })
-                    })
-                    .catch(next)
-                break;
-            default:
-                comicSchema.find({
-                    type,
-                    userId: getUserLocalStorage().id,
-                    status: { $in: ['hot', 'none'] }
-                })
-                    .sort({ lastRead: 1 })
-                    .then(comics => {
-                        comics = comicsMongooseToObject(comics)
-                        res.render('comics', {
-                            user: getUserLocalStorage(),
-                            comics 
-                        })
-                    })
-                    .catch(next)
-                break;
-        }
+        comicSchema
+            .find({
+                userId: getUserLocalStorage().id,
+                status: type,
+            })
+            .sort({ lastRead: 1 })
+            .then((comics) => {
+                comics = comicsMongooseToObject(comics);
+                res.render('comics', {
+                    user: getUserLocalStorage(),
+                    comics,
+                });
+            })
+            .catch(next);
     }
 
     // [GET] /comics/:id/search
     searchComics(req, res, next) {
-        const name = req.query.name
-        comicSchema.find({
-            userId: getUserLocalStorage().id,
-            status: { $in: ['hot', 'none']}
-        })
-            .then(comics => {
-                comics = comicsMongooseToObject(comics)
-                comics = comics.filter(comic => {
-                    return removeAccents(comic.name.toUpperCase()).includes(removeAccents(name.toUpperCase()))
-                })
+        const name = req.query.name;
+        comicSchema
+            .find({
+                userId: getUserLocalStorage().id,
+                status: { $in: ['hot', 'none'] },
+            })
+            .then((comics) => {
+                comics = comicsMongooseToObject(comics);
+                comics = comics.filter((comic) => {
+                    return removeAccents(comic.name.toUpperCase()).includes(
+                        removeAccents(name.toUpperCase())
+                    );
+                });
                 res.render('comics', {
                     user: getUserLocalStorage(),
-                    comics
-                })
+                    comics,
+                });
             })
-            .catch(next)
+            .catch(next);
     }
 
     // [GET] /comics/saveComics
@@ -140,7 +132,6 @@ class ComicsController {
         //         console.log(err)
         //         return
         //     }
-
         //     let arg = file.split("},")
         //     let arrComics = []
         //     for (let i = 0; i < arg.length; i++) {
@@ -154,7 +145,6 @@ class ComicsController {
         //             status: arg[i].split('"status": "')[1].split('",')[0],
         //         }
         //         arrComics.push(comic)
-
         //         // comic.save()
         //         //     .then()
         //         //     .catch(err => console.log(err))
@@ -164,4 +154,4 @@ class ComicsController {
     }
 }
 
-module.exports = new ComicsController
+module.exports = new ComicsController();
