@@ -80,34 +80,47 @@ txtImg.addEventListener('change', () => {
 
 // clear all card in content
 function clearCardInContent() {
-    while (cardContainer.firstChild) 
-        cardContainer.firstChild.remove();
-}
-
-function clickTypeComicMenu(button) {
-    clearCardInContent();
-    renderComics(arrCard, button.children[1].innerHTML);
-
-    // switch (button.children[1].innerHTML) {
-    //     case 'Manhwa':
-    //     case 'Manhua':
-    //     case 'Manga':
-    //     case 'Others':
-            
-    //         break;
-
-    //     default:
-    //         break;
-    // }
+    while (cardContainer.firstChild) cardContainer.firstChild.remove();
 }
 
 // render comics to content
-function renderComics(arrCard, typeStr) {
-    const arrComics = arrCard.filter((card) => {
-        return card.getAttribute('data-type') === typeStr;
-    });
+function renderComics(button) {
+    clearCardInContent();
 
-    console.log(arrCard)
+    const type = button.children[1].innerHTML;
+    let arrComics;
+
+    switch (type) {
+        case 'Manhwa':
+        case 'Manhua':
+        case 'Manga':
+        case 'Others':
+            arrComics = arrCard.filter((card) => {
+                return (
+                    card.getAttribute('data-type') === type &&
+                    (card.getAttribute('data-status') === 'Hot' ||
+                        card.getAttribute('data-status') === 'None')
+                );
+            });
+            break;
+
+        case 'Hot':
+        case 'End':
+        case 'Blacklist':
+        case 'Drop':
+            arrComics = arrCard.filter((card) => {
+                return card.getAttribute('data-status') === type;
+            });
+            break;
+        default:
+            arrComics = arrCard.filter((card) => {
+                return (
+                    card.getAttribute('data-status') === 'Hot' ||
+                    card.getAttribute('data-status') === 'None'
+                );
+            });
+            break;
+    }
 
     arrComics.forEach((card) => {
         cardContainer.appendChild(card);
@@ -115,15 +128,32 @@ function renderComics(arrCard, typeStr) {
 }
 
 // click button type of comics in menu
+btnAll.addEventListener('click', () => {
+    renderComics(btnAll);
+});
 btnManhwa.addEventListener('click', () => {
-    clickTypeComicMenu(btnManhwa)
+    renderComics(btnManhwa);
 });
 btnManhua.addEventListener('click', () => {
-    clickTypeComicMenu(btnManhua)
+    renderComics(btnManhua);
 });
 btnManga.addEventListener('click', () => {
-    clickTypeComicMenu(btnManga)
+    renderComics(btnManga);
 });
 btnOthers.addEventListener('click', () => {
-    clickTypeComicMenu(btnOthers)
+    renderComics(btnOthers);
 });
+btnHot.addEventListener('click', () => {
+    renderComics(btnHot);
+});
+btnEnd.addEventListener('click', () => {
+    renderComics(btnEnd);
+});
+btnBlacklist.addEventListener('click', () => {
+    renderComics(btnBlacklist);
+});
+btnDrop.addEventListener('click', () => {
+    renderComics(btnDrop);
+});
+
+btnAll.click();

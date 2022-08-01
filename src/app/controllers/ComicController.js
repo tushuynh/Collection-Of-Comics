@@ -12,7 +12,6 @@ class ComicsController {
         comicSchema
             .find({
                 userId: getUserLocalStorage().id,
-                status: { $in: ['hot', 'none'] },
             })
             .sort({ lastRead: 1 })
             .then((comics) =>
