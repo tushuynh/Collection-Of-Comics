@@ -151,6 +151,12 @@ class ComicsController {
         //     res.json(arrComics)
         // })
     }
+
+    test(req, res, next) {
+        comicSchema.find()
+        .then(comics => res.json(comics))
+        .catch(next)
+    }
 }
 
 module.exports = new ComicsController();

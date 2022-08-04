@@ -61,10 +61,10 @@ window.addEventListener('click', (e) => {
         addModal.classList.remove('modal-show');
     }
     if (e.target == editModal) {
-        history.back();
+        window.location = '/comics';
     }
     if (e.target == deleteModal) {
-        history.back();
+        window.location = '/comics';
     }
 });
 
@@ -113,12 +113,7 @@ function renderComics(button) {
             });
             break;
         default:
-            arrComics = arrCard.filter((card) => {
-                return (
-                    card.getAttribute('data-status') === 'Hot' ||
-                    card.getAttribute('data-status') === 'None'
-                );
-            });
+            arrComics = [...arrCard]
             break;
     }
 
@@ -127,33 +122,13 @@ function renderComics(button) {
     });
 }
 
-// click button type of comics in menu
-btnAll.addEventListener('click', () => {
-    renderComics(btnAll);
-});
-btnManhwa.addEventListener('click', () => {
-    renderComics(btnManhwa);
-});
-btnManhua.addEventListener('click', () => {
-    renderComics(btnManhua);
-});
-btnManga.addEventListener('click', () => {
-    renderComics(btnManga);
-});
-btnOthers.addEventListener('click', () => {
-    renderComics(btnOthers);
-});
-btnHot.addEventListener('click', () => {
-    renderComics(btnHot);
-});
-btnEnd.addEventListener('click', () => {
-    renderComics(btnEnd);
-});
-btnBlacklist.addEventListener('click', () => {
-    renderComics(btnBlacklist);
-});
-btnDrop.addEventListener('click', () => {
-    renderComics(btnDrop);
-});
+// Add event click for all buttons in menu sidebar
+function addEventListenerForButton(arrButton) {
+    arrButton.forEach(button => {
+        button.addEventListener('click', () => {
+            renderComics(button)
+        })
+    })
+}
 
-btnAll.click();
+addEventListenerForButton([btnAll, btnManhwa, btnManhua, btnManga, btnOthers, btnHot, btnEnd, btnBlacklist, btnDrop])
