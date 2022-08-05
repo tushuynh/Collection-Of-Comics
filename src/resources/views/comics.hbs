@@ -1,25 +1,21 @@
 {{#each comics}}
-  <div class="card" id="12" data-type="{{this.type}}" data-status="{{this.status}}">
-    <a href="/comics/delete/{{this._id}}">
-      <i class="bx bxs-x-circle btn-delete" id="1"></i>
-    </a>
-    <div class="card-img">
-      <a href="/comics/update/{{this._id}}">
-        <img class="btn-edit" src="{{this.image}}" alt="" />
-      </a>
+    <div class='card' data-id='{{this._id}}' data-type='{{this.type}}' data-status='{{this.status}}'>
+        <i class='bx bxs-x-circle btn-delete'></i>
+        <div class='card-img'>
+            <img class='btn-edit' src='{{this.image}}' alt=''/>
+        </div>
+        <div class='desc'>
+            <h6 class='card-title'>{{this.name}}</h6>
+        </div>
+        <div class='details'>
+            <div class='chap'>
+                <h6 class='primary-text'>{{this.chap}}</h6>
+                <h6 class='secondary-text'>Chap</h6>
+            </div>
+            <div class='last-read'>
+                <h6 class='primary-text'>{{this.lastRead}}</h6>
+                <h6 class='secondary-text'>Last Read</h6>
+            </div>
+        </div>
     </div>
-    <div class="desc">
-      <h6 class="card-title">{{this.name}}</h6>
-    </div>
-    <div class="details">
-      <div class="chap">
-        <h6 class="primary-text">{{this.chap}}</h6>
-        <h6 class="secondary-text">Chap</h6>
-      </div>
-      <div class="last-read">
-        <h6 class="primary-text">{{this.lastRead}}</h6>
-        <h6 class="secondary-text">Last Read</h6>
-      </div>
-    </div>
-  </div>
 {{/each}}

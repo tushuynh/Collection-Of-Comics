@@ -67,7 +67,7 @@ button {
     position: relative;
 }
 
-.sidebar #btn{
+.sidebar #btnMenu{
     position: absolute;
     color: #fff;
     left: 50%;
@@ -80,7 +80,7 @@ button {
     transform: translate(-50%);
 }
 
-.sidebar.active #btn{
+.sidebar.active #btnMenu{
     left: 90%;
 }
 
