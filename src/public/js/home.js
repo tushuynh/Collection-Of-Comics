@@ -1,7 +1,6 @@
 // Menu
 const btnMenu = document.querySelector('#btnMenu');
 const sidebar = document.querySelector('.sidebar');
-const btnLogout = document.getElementById('log-out');
 const btnAll = document.getElementById('btnAll');
 const btnManhwa = document.getElementById('btnManhwa');
 const btnManhua = document.getElementById('btnManhua');
@@ -84,10 +83,6 @@ function getArrCard() {
 
 btnMenu.onclick = function () {
     sidebar.classList.toggle('active');
-};
-
-btnLogout.onclick = function () {
-    window.location = '/';
 };
 
 // Click add comic button

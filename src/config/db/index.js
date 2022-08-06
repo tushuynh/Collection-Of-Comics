@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const MONGO_URI = "mongodb+srv://admin:admin@comiccollection.vhq97dj.mongodb.net/ComicCollection?retryWrites=true&w=majority"
 
-async function connect() {
+
+async function connect(MONGO_URI) {
     
     try {
         await mongoose.connect(MONGO_URI)
