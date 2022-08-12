@@ -1,10 +1,11 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose');
+const mongooseDelete = require('mongoose-delete');
 
 const reqStr = {
     type: String,
     required: true,
-    default: ""
-}
+    default: '',
+};
 
 const comicSchema = new mongoose.Schema({
     userId: reqStr,
@@ -15,9 +16,14 @@ const comicSchema = new mongoose.Schema({
     lastRead: {
         type: Date,
         required: true,
-        default: Date.now
+        default: Date.now,
     },
-    status: reqStr
-})
+    status: reqStr,
+});
 
-module.exports = mongoose.model("Comic", comicSchema)
+comicSchema.plugin(mongooseDelete, { 
+    overrideMethods: 'all',
+    deletedAt: true
+});
+
+module.exports = mongoose.model('Comic', comicSchema);

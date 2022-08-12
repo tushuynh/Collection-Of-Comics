@@ -11,11 +11,9 @@ const db = require('./config/db');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const MONGO_URI =
-    'mongodb+srv://admin:admin@comiccollection.vhq97dj.mongodb.net/ComicCollection?retryWrites=true&w=majority';
 
 // Connect to database
-db.connect(MONGO_URI);
+db.connect(process.env.MONGO_URI);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,14 +22,14 @@ app.use(methodOverride('_method')); // Override method in HTML(only GET & POST)
 // Config session and store session in database
 app.use(
     session({
-        secret: 'sssshhhhhhhh',
+        secret: process.env.SECRET,
         resave: false,
         saveUninitialized: true,
         cookie: {
             secure: false,
             maxAge: 604800000,
         },
-        store: MongoStore.create({ mongoUrl: MONGO_URI }),
+        store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     })
 );
 
