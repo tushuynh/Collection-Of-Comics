@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method')); // Override method in HTML(only GET & POST)
 // Config session and store session in database
+app.set('trust proxy', 1)
 app.use(
     session({
         secret: process.env.SECRET,
