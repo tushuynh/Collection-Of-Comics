@@ -25,7 +25,7 @@ class ComicsController {
         const comic = comicSchema(req.body);
         comic
             .save()
-            .then(() => res.redirect('/comics'))
+            .then(() => res.redirect('back'))
             .catch(next);
     }
 
@@ -34,7 +34,7 @@ class ComicsController {
         req.body.lastRead = new Date();
         comicSchema
             .updateOne({ _id: req.params.comicId }, req.body)
-            .then(() => res.redirect('/comics'))
+            .then(() => res.redirect('back'))
             .catch(next);
     }
 
@@ -42,7 +42,7 @@ class ComicsController {
     deleteComic(req, res, next) {
         comicSchema
             .delete({ _id: req.params.comicId })
-            .then(() => res.redirect('/comics'))
+            .then(() => res.redirect('back'))
             .catch(next);
     }
 

@@ -31,6 +31,39 @@ const deleteForm = document.querySelector('.delete-modal .form');
 const cardContainer = document.querySelector('.card-container');
 const cardChilren = cardContainer.children;
 const arrCard = getArrCard();
+let curCard = [...arrCard]
+
+// Filter
+const filter = document.querySelector('.filter');
+filter.addEventListener('change', () => {
+    let filterCard
+    switch(filter.selectedIndex) {
+        case 0:
+            filterCard = curCard.sort((currentCard, nextCard) => {
+                const current = currentCard.querySelector('.last-read .primary-text').innerHTML
+                const next = nextCard.querySelector('.last-read .primary-text').innerHTML
+                const dateCurrentCard = new Date(current.split('/').reverse().join('-'))
+                const dateNextCard = new Date(next.split('/').reverse().join('-'))
+
+                return dateCurrentCard - dateNextCard
+            })
+            renderComics(filterCard)
+            break;
+        case 1:
+            filterCard = curCard.sort((currentCard, nextCard) => {
+                const current = currentCard.querySelector('.last-read .primary-text').innerHTML
+                const next = nextCard.querySelector('.last-read .primary-text').innerHTML
+                const dateCurrentCard = new Date(current.split('/').reverse().join('-'))
+                const dateNextCard = new Date(next.split('/').reverse().join('-'))
+
+                return dateNextCard - dateCurrentCard
+            })
+            renderComics(filterCard)
+            break;
+        default:
+            break;
+    }
+})
 
 function getArrCard() {
     let arrCard = [...cardChilren];
@@ -60,6 +93,13 @@ function getArrCard() {
             );
             editForm.setAttribute('method', 'POST');
         });
+
+        // Add event click comic's name redirect to page comic
+        const comicName = card.querySelector('.card-title')
+        comicName.addEventListener('click', () => {
+            const paramUrl = removeAccents(comicName.innerHTML.toUpperCase()).split(' ').join('-')
+            window.location.href = 'http://www.nettruyenme.com/truyen-tranh/' + paramUrl
+        })
 
         // Add event click for button delete for comic card
         const btnDelete = card.querySelector('.btn-delete');
@@ -136,14 +176,13 @@ function addEventListenerForButton(arrButton) {
     arrButton.forEach((button) => {
         button.addEventListener('click', () => {
             const type = button.children[1].innerHTML;
-            let arrComics;
-
+            filter.selectedIndex = 0
             switch (type) {
                 case 'Manhwa':
                 case 'Manhua':
                 case 'Manga':
                 case 'Others':
-                    arrComics = arrCard.filter((card) => {
+                    curCard = arrCard.filter((card) => {
                         return (
                             card.getAttribute('data-type') === type &&
                             (card.getAttribute('data-status') === 'Hot' ||
@@ -156,16 +195,16 @@ function addEventListenerForButton(arrButton) {
                 case 'End':
                 case 'Blacklist':
                 case 'Drop':
-                    arrComics = arrCard.filter((card) => {
+                    curCard = arrCard.filter((card) => {
                         return card.getAttribute('data-status') === type;
                     });
                     break;
                 default:
-                    arrComics = [...arrCard];
+                    curCard = [...arrCard];
                     break;
             }
 
-            renderComics(arrComics);
+            renderComics(curCard);
         });
     });
 }

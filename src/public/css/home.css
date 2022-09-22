@@ -95,6 +95,7 @@ button {
     margin: 0 5px;
     list-style: none;
     line-height: 50px;
+    cursor: pointer;
 }
 
 .sidebar ul li .tooltip{
@@ -442,6 +443,23 @@ header{
     }
 }
 
+.filter{
+    position: absolute;
+    top: 110px;
+    right: 40px;
+    z-index: 2;
+}
+
+.dropdown{
+    padding: 5px;
+    border-radius: 4px;
+    background-color: white;
+    width: 11%;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
 .card{
     background: none;
     backdrop-filter: blur(5px);
@@ -488,6 +506,7 @@ header{
     letter-spacing: 0.7px;
     margin: 5px 0;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .primary-text{
