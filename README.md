@@ -1,6 +1,6 @@
 # Collection-Of-Comics
 Archives comics that have been read but not completed
 
-Account test
-username: user
+Account test </br>
+username: user </br>
 password: user123
