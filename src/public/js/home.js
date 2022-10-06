@@ -114,7 +114,7 @@ function getArrCard() {
 
             editForm.name.value = card.querySelector('.card-title').innerHTML;
             editForm.chap.value = card.querySelector(
-                '.chap .primary-text'
+                '.chapRead .primary-text'
             ).innerHTML;
             editForm.image.value = card
                 .querySelector('.btn-edit')
