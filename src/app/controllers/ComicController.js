@@ -1,6 +1,9 @@
 const comicSchema = require('../models/comic');
 const { comicsMongooseToObject } = require('../../util/mongoose');
-const fs = require('fs');
+const helper = require('../../util/helper')
+const axios = require('axios')
+const cheerio = require('cheerio')
+
 
 class ComicsController {
     // [GET] /comics
@@ -50,6 +53,46 @@ class ComicsController {
     logout(req, res, next) {
         req.session.destroy();
         res.redirect('/');
+    }
+
+    // [GET] /comics/crawlChapPresent
+    crawlChapPresent(req, res, next) {
+        comicSchema
+            .find()
+            .then(comics => {
+                console.log(comics.length)
+                comics.forEach(comic => {
+                    const comicName = helper.removeAccents(comic.name.toUpperCase()).split(' ').join('-')
+                    const url = 'http://nhattruyenone.com/truyen-tranh/' + comicName
+                    axios.get(url)
+                        .then((response) => {
+                            const $ = cheerio.load(response.data)
+                            let chap = $('.chapter').first().text().split(' ')[1].toString()
+                            chap = chap.slice(0, chap.length - 1)
+                            
+                            comicSchema
+                                .updateOne({
+                                    name: comic.name
+                                }, {
+                                    chapPresent: chap
+                                })
+                                .then(data => next)
+                                .catch(err => res.json(err))
+                        })
+                        .catch(err => res.json(err))
+                })
+                console.log('All updated!')
+            })
+            .catch(next);
+    }
+
+    // [GET] /getComics
+    getComics(req, res, next) {
+        comicSchema
+            .find()
+            .sort({ lastRead: 1})
+            .then(comics => res.json(comics))
+            .catch(next)
     }
 }
 

@@ -10,7 +10,8 @@ const reqStr = {
 const comicSchema = new mongoose.Schema({
     userId: reqStr,
     name: reqStr,
-    chap: reqStr,
+    chapRead: reqStr,
+    chapPresent: reqStr,
     type: reqStr,
     image: reqStr,
     lastRead: {

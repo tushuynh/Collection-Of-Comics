@@ -525,23 +525,32 @@ header{
     margin: 5px 0;
 }
 
-.details{
+.details {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    border-radius: 0 0 8px 6px;
+}
+
+.chapter{
     display: grid;
     width: 100%;
     height: 70px;
     grid-template-columns: 1fr 1fr;
-    background: rgba(255, 255, 255, 0.06);
-    backdrop-filter: blur(20px);
-    border-radius: 0 0 8px 6px;
     padding: 5px 0;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.08);
 }
 
-.details div{
+.chapter div{
     text-align: center;
 }
 
-.details div:first-child{
+.chapter div:first-child{
     border-right: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.last-read {
+    width: 100%;
+    text-align: center;
 }
 
 /*---------------------------- Modal ----------------------------*/

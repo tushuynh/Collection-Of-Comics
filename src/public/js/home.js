@@ -49,6 +49,7 @@ filter.addEventListener('change', () => {
             })
             renderComics(filterCard)
             break;
+
         case 1:
             filterCard = curCard.sort((currentCard, nextCard) => {
                 const current = currentCard.querySelector('.last-read .primary-text').innerHTML
@@ -60,6 +61,43 @@ filter.addEventListener('change', () => {
             })
             renderComics(filterCard)
             break;
+
+        case 2:
+            filterCard = curCard.sort((currentCard, nextCard) => {
+                const currentCardChap = {
+                    chapRead: currentCard.querySelector('.chapRead .primary-text').innerHTML,
+                    chapPresent: currentCard.querySelector('.chapPresent .primary-text').innerHTML
+                }
+                const nextCardChap = {
+                    chapRead: nextCard.querySelector('.chapRead .primary-text').innerHTML,
+                    chapPresent: nextCard.querySelector('.chapPresent .primary-text').innerHTML
+                }
+
+                const unReadChapCurrentCard = currentCardChap.chapPresent - currentCardChap.chapRead
+                const unReadChapNextCard = nextCardChap.chapPresent - nextCardChap.chapRead 
+                return unReadChapCurrentCard - unReadChapNextCard
+            })
+            renderComics(filterCard)
+            break;
+
+        case 3:
+            filterCard = curCard.sort((currentCard, nextCard) => {
+                const currentCardChap = {
+                    chapRead: currentCard.querySelector('.chapRead .primary-text').innerHTML,
+                    chapPresent: currentCard.querySelector('.chapPresent .primary-text').innerHTML
+                }
+                const nextCardChap = {
+                    chapRead: nextCard.querySelector('.chapRead .primary-text').innerHTML,
+                    chapPresent: nextCard.querySelector('.chapPresent .primary-text').innerHTML
+                }
+
+                const unReadChapCurrentCard = currentCardChap.chapPresent - currentCardChap.chapRead
+                const unReadChapNextCard = nextCardChap.chapPresent - nextCardChap.chapRead 
+                return unReadChapNextCard - unReadChapCurrentCard
+            })
+            renderComics(filterCard)
+            break;
+
         default:
             break;
     }
