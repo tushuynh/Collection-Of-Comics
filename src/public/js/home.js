@@ -11,6 +11,7 @@ const btnEnd = document.getElementById('btnEnd');
 const btnBlacklist = document.getElementById('btnBlacklist');
 const btnDrop = document.getElementById('btnDrop');
 const txtSearch = document.getElementById('searchTxt');
+let typePresent
 
 // Modal add
 const btnAdd = document.getElementById('btnAdd');
@@ -109,11 +110,11 @@ function getArrCard() {
     arrCard.forEach((card) => {
         // Add event double click for button edit for comic card
         const btnEdit = card.querySelector('.btn-edit');
-        btnEdit.addEventListener('dblclick', () => {
+        btnEdit.addEventListener('click', () => {
             editModal.classList.add('modal-show');
 
             editForm.name.value = card.querySelector('.card-title').innerHTML;
-            editForm.chap.value = card.querySelector(
+            editForm.chapRead.value = card.querySelector(
                 '.chapRead .primary-text'
             ).innerHTML;
             editForm.image.value = card
@@ -133,11 +134,11 @@ function getArrCard() {
         });
 
         // Add event click comic's name redirect to page comic
-        const comicName = card.querySelector('.card-title')
-        comicName.addEventListener('click', () => {
-            const paramUrl = removeAccents(comicName.innerHTML.toUpperCase()).split(' ').join('-')
-            window.location.href = 'http://www.nettruyenme.com/truyen-tranh/' + paramUrl
-        })
+        const comicName = card.querySelector('.comicName')
+        comicName.setAttribute(
+            'href',
+            getComicURL(comicName.firstChild.innerHTML)
+        )
 
         // Add event click for button delete for comic card
         const btnDelete = card.querySelector('.btn-delete');
@@ -214,6 +215,13 @@ function addEventListenerForButton(arrButton) {
     arrButton.forEach((button) => {
         button.addEventListener('click', () => {
             const type = button.children[1].innerHTML;
+            if (typePresent != null)
+                typePresent.removeAttribute('id')
+            button.setAttribute(
+                'id',
+                'select-type'
+            )
+            typePresent = button
             filter.selectedIndex = 0
             switch (type) {
                 case 'Manhwa':
@@ -295,4 +303,9 @@ function removeAccents(str) {
         str = str.replace(re, char);
     }
     return str;
+}
+
+function getComicURL(comicName) {
+    const paramUrl = removeAccents(comicName.toUpperCase()).split(' ').join('-')
+    return 'http://www.nettruyenme.com/truyen-tranh/' + paramUrl
 }

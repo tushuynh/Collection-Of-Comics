@@ -51,7 +51,7 @@
                     <form action="/comics/create" method="POST" class="form" autocomplete="off">
                         <img src="" alt="" id="imgAddModal">
                         <input class="form-control" type="text" name="name" placeholder="Comic's name">
-                        <input class="form-control" type="number" name="chapRead" placeholder="Chap">
+                        <input class="form-control" type="number" name="chapRead" placeholder="Chap Read">
                         <input type="text" class="form-control" name="image" id="linkImgAddModal"
                             placeholder="Link image of the comic">
                         <select class="form-control" name="type" id="type">
@@ -84,7 +84,7 @@
                         <img src="{{comic.image}}" alt="" name="imgEditModal">
                         <input class="form-control" type="text" name="name" placeholder="Comic's name"
                             value="{{comic.name}}">
-                        <input class="form-control" type="number" name="chap" placeholder="Chap" value="{{comic.chap}}">
+                        <input class="form-control" type="number" name="chapRead" placeholder="Chap" value="{{comic.chap}}">
                         <input type="text" class="form-control" name="image" placeholder="Link image of the comic"
                             value="{{comic.image}}">
                         <select class="form-control" name="type" id="type">

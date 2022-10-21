@@ -140,6 +140,11 @@ button {
     background: #fff;
 }
 
+#select-type {
+    background: #fff;
+    color: #11101d;
+}
+
 .sidebar ul li a i{
     height: 50px;
     min-width: 50px;

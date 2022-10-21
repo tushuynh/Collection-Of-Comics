@@ -38,7 +38,7 @@ class ComicsController {
         comicSchema
             .updateOne({ _id: req.params.comicId }, req.body)
             .then(() => res.redirect('back'))
-            .catch(next);
+            .catch(err => console.log('error: ', err));
     }
 
     // [DELETE] /comics/delete/:comicId
@@ -94,6 +94,8 @@ class ComicsController {
             .then(comics => res.json(comics))
             .catch(next)
     }
+
+    
 }
 
 module.exports = new ComicsController();

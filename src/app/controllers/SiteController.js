@@ -51,6 +51,7 @@ class SiteController {
             });
     }
 
+    // [POST] /register
     register(req, res, next) {
         const { name, username, password } = req.body;
 
