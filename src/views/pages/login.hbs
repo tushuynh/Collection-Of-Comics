@@ -12,8 +12,9 @@
 <body>
     <div>
         <div class="container">
-            <form action="" method="post">
+            <form action="/login" method="post">
                 <img src="/img/KilluaAvatar.jpg" alt="logo">
+                <div class="loginError">{{ loginError }}</div>
                 <input id="username" name="username" type="text" placeholder="Username"> <br>
                 <input id="password" name="password" type="password" placeholder="Password"> <br>
                 <input id="signIn" type="submit" value="Sign in"> <br>

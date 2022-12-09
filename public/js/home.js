@@ -128,7 +128,7 @@ function getArrCard() {
 
             editForm.setAttribute(
                 'action',
-                `/comics/update/${card.getAttribute('data-id')}?_method=PUT`
+                `/comic/update/${card.getAttribute('data-id')}?_method=PUT`
             );
             editForm.setAttribute('method', 'POST');
         });
@@ -145,7 +145,7 @@ function getArrCard() {
         btnDelete.addEventListener('click', () => {
             deleteForm.setAttribute(
                 'action',
-                `/comics/delete/${card.getAttribute('data-id')}?_method=DELETE`
+                `/comic/delete/${card.getAttribute('data-id')}?_method=DELETE`
             );
             deleteForm.setAttribute('method', 'POST');
 
@@ -181,7 +181,7 @@ window.addEventListener('click', (e) => {
         addModal.classList.remove('modal-show');
     }
     if (e.target == editModal) {
-        // window.location = '/comics';
+        // window.location = '/comic';
         editModal.classList.remove('modal-show');
     }
 });
@@ -307,5 +307,5 @@ function removeAccents(str) {
 
 function getComicURL(comicName) {
     const paramUrl = removeAccents(comicName.toUpperCase()).split(' ').join('-')
-    return 'http://www.nettruyenme.com/truyen-tranh/' + paramUrl
+    return 'https://www.nettruyenin.com/truyen-tranh/' + paramUrl
 }

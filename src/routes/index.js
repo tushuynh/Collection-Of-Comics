@@ -1,9 +1,9 @@
-const sitesRouter = require('./sites')
-const comicsRouter = require('./comics')
+const sitesRouter = require('./siteRouter')
+const comicsRouter = require('./comicRouter')
 
 function route(app) {
     
-    app.use('/comics', comicsRouter)
+    app.use('/comic', comicsRouter)
     app.use("/", sitesRouter)
     
 }

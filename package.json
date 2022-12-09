@@ -4,9 +4,9 @@
   "description": "This is the collection of comics",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "backup": "nodemon src/backup.js"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "backup": "nodemon backup.js"
   },
   "author": "Killua",
   "license": "ISC",
@@ -14,16 +14,17 @@
     "axios": "^1.0.0",
     "bcryptjs": "^2.4.3",
     "cheerio": "^1.0.0-rc.12",
-    "connect-mongo": "^4.6.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-handlebars": "^6.0.6",
-    "express-session": "^1.17.3",
+    "jsonwebtoken": "^8.5.1",
     "method-override": "^3.0.0",
     "moment": "^2.29.4",
     "mongoose": "^6.4.5",
-    "mongoose-delete": "^0.5.4"
+    "mongoose-delete": "^0.5.4",
+    "node-schedule": "^2.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
