@@ -5,6 +5,10 @@
     font-family: sans-serif;
 }
 
+a {
+    text-decoration: none;
+}
+
 body{
     width: 100%;
     height: 100vh;
@@ -35,9 +39,6 @@ body{
     transform: translate(-50%, -50%);
     top: 50%;
     left: 50%;
-}
-
-form {
     background: rgba(255, 255, 255, 0.3);
     padding: 3em;
     border-radius: 20px;
@@ -45,13 +46,16 @@ form {
     backdrop-filter: blur(10px);
     box-shadow: 20px 20px 40px -6px rgba(0, 0, 0, 0.2);
     text-align: center;
+}
+
+form {
     position: relative;
 }
 
 img{
+    width: 70%;
     display: block;
     margin: 0px auto 60px auto;
-    border-radius: 50%;
 }
 
 .loginError {
@@ -74,6 +78,10 @@ form input{
     font-weight: 500;
     transition: all 0.2s ease-in-out;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-group {
+    margin-bottom: 15px;
 }
 
 form input:hover{
@@ -106,6 +114,53 @@ form input[type="submit"]:active{
     font-weight: 400;
     color: #fff;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.btn {
+    background: transparent;
+    width: 250px;
+    padding: 1em;
+    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5000px;
+    backdrop-filter: blur(5px);
+    box-shadow: 4px 4px 60px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.form-group a {
+    display: block;
+    width: 100%;
+    position: relative;
+    padding-left: 44px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.form-group a.login-facebook{
+    color: #fff;
+    background-color: #3b5998;
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+.form-group img {
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 25px;
+    font-size: 1.6em;
+    text-align: center;
+    height: 39px;
+    padding-top: 3px;
 }
 
 .drop{
@@ -145,7 +200,7 @@ form input[type="submit"]:active{
     height: 100px;
     width: 100px;
     bottom: 120px;
-    right: -50px;
+    right: -60px;
     z-index: -1;
 }
 
@@ -167,7 +222,7 @@ form input[type="submit"]:active{
 .drop-5{
     height: 120px;
     width: 120px;
-    bottom: -50px;
+    bottom: -70px;
     left: -50px;
     z-index: -1;
 }

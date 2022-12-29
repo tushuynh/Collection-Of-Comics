@@ -5,10 +5,13 @@ const methodOverride = require('method-override');
 const path = require('path');
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
+const passport = require('passport');
+const session = require('express-session')
 
-const route = require('./src/routes');
 const db = require('./src/configs/dbConfig');
+const route = require('./src/routes');
 const errorHandler = require('./src/middlewares/errorHandler')
+require('./src/services/passport')
 // const scheduler = require('./src/services/schedule')
 
 const app = express();
@@ -23,6 +26,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method')); // Override method in HTML(only GET & POST)
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        secure: process.env.NODE_ENV === 'development' ? false : true,
+        httpOnly: true,
+        sameSite: true,
+        maxAge: 600000
+    }
+}))
 // app.set('trust proxy', 1)
 
 // Config handlebars
@@ -39,4 +53,4 @@ errorHandler(app)
 // config scheduler
 // scheduler.crawlChapPresent()
 
-app.listen(port, () => console.log(`App listening on port ${port}...`));
+app.listen(port, () => console.log(`App listening on http://localhost:${port}`));
