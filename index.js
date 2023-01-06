@@ -43,7 +43,7 @@ app.use(session({
         maxAge: 600000
     }
 }))
-// app.set('trust proxy', 1)
+app.set('trust proxy', 1)
 
 // Config handlebars
 app.engine('hbs', handlebars.engine({ extname: '.hbs' }));
