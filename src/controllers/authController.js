@@ -13,11 +13,11 @@ class AuthController {
         res.cookie('name', user.name)
         res.cookie('accessToken', token, {
             httpOnly: true,
-            secure: (process.env.NODE_ENV === 'development') ? false : true
+            secure: (process.env.NODE_ENV === 'production') ? true : false
         })
         res.cookie('userId', user.id, {
             httpOnly: true,
-            secure: (process.env.NODE_ENV === 'development') ? false : true
+            secure: (process.env.NODE_ENV === 'production') ? true : false
         })
         res.redirect('/comic');
     }

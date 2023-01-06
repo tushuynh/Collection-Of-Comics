@@ -1,0 +1,157 @@
+[33mcommit e23292b2ae7e48baec7f5a05a9009a7c32a333a5[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Fri Jan 6 18:38:25 2023 +0700
+
+    Add request rate limit and helmet.
+
+[33mcommit e9cfe5d47fc3731f5a94e4002844a201c0ea0377[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Thu Dec 29 23:33:40 2022 +0700
+
+    Fix oauth2.
+
+[33mcommit 53b9a001b6a85c00001cdb8596dfda254aa3ac91[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Thu Dec 29 22:07:31 2022 +0700
+
+    Add service OAuth2, change logo, icon.
+
+[33mcommit 95379e5700e3bad7367af5cdcfda6734450d9e9d[m
+Merge: 8a9953a 6623c2a
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Fri Dec 9 14:57:14 2022 +0700
+
+    Merge branch 'main' of https://github.com/ZDKillua/Collection-Of-Comics
+
+[33mcommit 8a9953afd93da36377c596327c3d8ca9c585e2b2[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Fri Dec 9 14:56:28 2022 +0700
+
+    Restructure directory app, add 404 page and config error handler.
+
+[33mcommit 6623c2a06d2b3c9c23c7ed4d5312ca6e90389865[m
+Author: Huỳnh Tăng Anh Tú <72844657+ZDKillua@users.noreply.github.com>
+Date:   Thu Dec 8 16:17:19 2022 +0700
+
+    Update README.md
+
+[33mcommit 10111c888a7718b6f64e07488a77ca7fc2cb5c9a[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Fri Oct 21 12:43:44 2022 +0700
+
+    Fix update comic, add tag a for comic name, add select type comic.
+
+[33mcommit 5ed42142928c18a872c5713c162eb94fb2afbdcf[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Thu Oct 6 16:47:51 2022 +0700
+
+    Fix rename property of comic.
+
+[33mcommit 2cad599ec4bdfcf70e96a4fdd77cc4e05dfb073f[m
+Merge: 2ac48e0 7a71444
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Thu Oct 6 16:35:08 2022 +0700
+
+    Merge branch 'main' of https://github.com/ZDKillua/Collection-Of-Comics
+
+[33mcommit 2ac48e0266b26db200f24cdf3177d5668e6eaf76[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Thu Oct 6 16:33:04 2022 +0700
+
+    Crawl data chap present of comics and update css. Add sort for unread chap.
+
+[33mcommit 7a71444d398809dd7ebbe45c7f38cb8e2a91410b[m
+Author: Huỳnh Tăng Anh Tú <72844657+ZDKillua@users.noreply.github.com>
+Date:   Tue Sep 27 13:32:02 2022 +0700
+
+    Update README.md
+
+[33mcommit 6a8fa33ae8dbd1db1139ee8f2a30a979a4c0d8bc[m
+Author: Huỳnh Tăng Anh Tú <72844657+ZDKillua@users.noreply.github.com>
+Date:   Tue Sep 27 13:28:35 2022 +0700
+
+    Update README.md
+
+[33mcommit 9e3bf0437a34756497e070b1eb5365c23ac620e6[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Thu Sep 22 15:50:55 2022 +0700
+
+    Add link redirect to comic page and sort comic with last read.
+
+[33mcommit c0d26c1e30a87cc273052e55c2b4e8614f9be90b[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Sun Aug 21 15:36:49 2022 +0700
+
+    Fix httponly.
+
+[33mcommit 44553569f54afd08bda28abd8ab88b6a2594bf01[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Sun Aug 21 15:32:42 2022 +0700
+
+    Turn on httponly.
+
+[33mcommit ab04c21c2646594a77d2dd07d82c51d8c8840df4[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Sat Aug 20 20:36:05 2022 +0700
+
+    Update authentication with bcryptjs hash password (Register & login).
+
+[33mcommit d0ce1e25270feab9e20828a797061e175c18a555[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Fri Aug 12 11:05:07 2022 +0700
+
+    Add soft delete for comics. Resetup backup and reconfig uri database and secret key
+
+[33mcommit 831b918a5303a56543e68fa0c78879bec5787475[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Sat Aug 6 13:50:50 2022 +0700
+
+    Update save data user in session and cookie. Add backup all comics.
+
+[33mcommit 09b756864e1362dae456e19753ba1c6d236d2d10[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Fri Aug 5 14:05:45 2022 +0700
+
+    Update text search comics, update comic, delete comic.
+
+[33mcommit 33b52b91f370257677a569ce47cadb4c1131f2c1[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Thu Aug 4 15:45:01 2022 +0700
+
+    Finish search comics with menu sidebar.
+
+[33mcommit 67fdee4270cb909891ba82e2ecb8bc10ca7b75c7[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Mon Aug 1 17:29:13 2022 +0700
+
+    Update all button in menu sidebar.
+
+[33mcommit cd631c9ce2a916056e41a794cbf69b2d5a2ad16e[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Mon Aug 1 16:21:42 2022 +0700
+
+    Update button type of comics in menu
+
+[33mcommit cfd62905ff0d6863c3410dba0b840bdca893516f[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Sat Jul 30 16:35:13 2022 +0700
+
+    Remove some router redundant
+
+[33mcommit 80c9062acfe3694ee719be70fad6fa67f7eb883e[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Sat Jul 30 16:27:53 2022 +0700
+
+    fix package.json for heroku
+
+[33mcommit b6c8aa364310fb4e9f9b3616f2d78eb2a8123888[m
+Author: ZDKillua <killuazoldyck.1520@gmail.com>
+Date:   Sat Jul 30 11:48:02 2022 +0700
+
+    add All
+
+[33mcommit f34b1cf79627f001efff532a15386f8fb70c6ae8[m
+Author: Huỳnh Tăng Anh Tú <72844657+ZDKillua@users.noreply.github.com>
+Date:   Sat Jul 30 11:44:45 2022 +0700
+
+    Initial commit

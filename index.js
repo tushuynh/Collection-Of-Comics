@@ -6,7 +6,6 @@ const path = require('path');
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const rateLimit = require('express-rate-limit')
-const helmet = require('helmet')
 
 const db = require('./src/configs/dbConfig');
 const route = require('./src/routes');
@@ -28,7 +27,6 @@ db.connect(process.env.MONGO_URI);
 if (process.env.NODE_ENV === 'production') {
     app.use(limiter)
 }
-app.use(helmet())
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
