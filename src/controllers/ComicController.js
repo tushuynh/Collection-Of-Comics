@@ -27,75 +27,45 @@ class ComicController {
 
     
 
-    // [GET] /comics/crawlChapPresent
+    // [GET] /comic/crawlChapPresent
     // Get data of comics from web to store in database
     async crawlChapPresent(req, res, next) {
         // const comics = await comicSchema.find()
         // const response = await Promise.all(comics.map(async comic => {
         //     const comicName = removeAccents(comic.name.toUpperCase()).split(' ').join('-')
+        //     console.log(process.env.WEB_CRAWL_URL)
         //     const url = process.env.WEB_CRAWL_URL + comicName
         //     try {
         //         const response = await axios.get(url)
         //         const $ = cheerio.load(response.data)
 
         //         // get chap present
-        //         let chap = $('.chapter').first().text().split(' ')[1].toString()
-        //         chap = chap.slice(0, chap.length - 1)
+        //         let chap = $('.chapter-item a').first().text()
+        //         chap = chap.split(' ')[1]
+
+
         //         // get comic's image url
-        //         const imageURL = $('.col-image img').attr('src')
+        //         // const imageURL = $('.col-image img').attr('src')
+
         //         await comicSchema
         //             .updateOne({
         //                 name: comic.name
         //             }, {
         //                 chapPresent: chap,
-        //                 image: imageURL
+        //                 // image: imageURL
         //             })
-        //         return comicName
+        //         return { comicName, chap}
         //     } catch (error) {
-        //         return error.config.url
+        //         if (!error.config.url)
+        //             return error.config.url
+        //         return error
         //     }
         // }))
+
         // res.json({
         //     message: 'Finish update chap present for all comics',
         //     response
         // })
-        
-        comicSchema
-            .find()
-            .then(async comics => {
-                await comics.forEach(comic => {
-                    const comicName = removeAccents(comic.name.toUpperCase()).split(' ').join('-')
-                    const url = 'https://www.nettruyenin.com/truyen-tranh/' + comicName
-                    axios.get(url)
-                        .then((response) => {
-                            const $ = cheerio.load(response.data)
-
-                            // get chap present
-                            let chap = $('.chapter').first().text().split(' ')[1].toString()
-                            chap = chap.slice(0, chap.length - 1)
-
-                            // get comic's image url
-                            const imageURL = $('.col-image img').attr('src')
-
-                            console.log(chap)
-                            comicSchema
-                                .updateOne({
-                                    name: comic.name
-                                }, {
-                                    chapPresent: chap,
-                                    image: imageURL
-                                })
-                                .then(data => next)
-                                .catch(err => res.json(err))
-                        })
-                        .catch(err => res.json(err))
-                })
-                // res.json({
-                //     Message: 'Finish update chap present for all comics',
-                //     Count: comics.length
-                // })
-            })
-            .catch(next);
     }
 
     // [GET] /getComics

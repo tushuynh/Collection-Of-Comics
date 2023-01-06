@@ -3,10 +3,10 @@ const express = require('express');
 const handlebars = require('express-handlebars');
 const methodOverride = require('method-override');
 const path = require('path');
-const cors = require('cors')
 const cookieParser = require('cookie-parser')
-const passport = require('passport');
 const session = require('express-session')
+const rateLimit = require('express-rate-limit')
+const helmet = require('helmet')
 
 const db = require('./src/configs/dbConfig');
 const route = require('./src/routes');
@@ -16,11 +16,19 @@ require('./src/services/passport')
 
 const app = express();
 const port = process.env.PORT || 3000;
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100
+})
+
 
 // Connect to database
 db.connect(process.env.MONGO_URI);
 
-app.use(cors())
+if (process.env.NODE_ENV === 'production') {
+    app.use(limiter)
+}
+app.use(helmet())
 app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,13 +39,13 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     cookie: {
-        secure: process.env.NODE_ENV === 'development' ? false : true,
+        secure: process.env.NODE_ENV === 'production' ? true : false,
         httpOnly: true,
         sameSite: true,
         maxAge: 600000
     }
 }))
-app.set('trust proxy', 1)
+// app.set('trust proxy', 1)
 
 // Config handlebars
 app.engine('hbs', handlebars.engine({ extname: '.hbs' }));
