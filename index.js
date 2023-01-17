@@ -5,33 +5,25 @@ const methodOverride = require('method-override');
 const path = require('path');
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
-const rateLimit = require('express-rate-limit')
+const passport = require('passport')
 
 const db = require('./src/configs/dbConfig');
 const route = require('./src/routes');
 const errorHandler = require('./src/middlewares/errorHandler')
 require('./src/services/passport')
-// const scheduler = require('./src/services/schedule')
+const scheduler = require('./src/services/schedule')
 
 const app = express();
 const port = process.env.PORT || 3000;
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100
-})
-
 
 // Connect to database
 db.connect(process.env.MONGO_URI);
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(limiter)
-}
-app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method')); // Override method in HTML(only GET & POST)
+app.use(cookieParser())
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: true,
@@ -43,12 +35,19 @@ app.use(session({
         maxAge: 600000
     }
 }))
+app.use(passport.initialize());
+app.use(passport.session());
 app.set('trust proxy', 1)
 
 // Config handlebars
 app.engine('hbs', handlebars.engine({ extname: '.hbs' }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'src/views'));
+
+// app.use((req, res, next) => {
+//     console.log(`Incomming - Protocol: [${req.protocol}] - Method: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`)
+//     next()
+// })
 
 // route init
 route(app);
@@ -57,6 +56,6 @@ route(app);
 errorHandler(app)
 
 // config scheduler
-// scheduler.crawlChapPresent()
+scheduler.crawlChapPresent()
 
-app.listen(port, () => console.log(`App listening on http://localhost:${port}`));
+app.listen(port, () => console.log(`App listening on port ${port}`));

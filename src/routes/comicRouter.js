@@ -4,7 +4,6 @@ const comicController = require('../controllers/ComicController');
 
 // ---------------------------------------------------------------- [GET]
 router.get('/getComics', comicController.getComics)
-router.get('/crawlChapPresent', comicController.crawlChapPresent)
 router.get('/', comicController.showComics);
 
 // ---------------------------------------------------------------- [POST]
