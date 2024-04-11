@@ -3,41 +3,41 @@ const express = require('express');
 const handlebars = require('express-handlebars');
 const methodOverride = require('method-override');
 const path = require('path');
-const cookieParser = require('cookie-parser')
-const session = require('express-session')
-const passport = require('passport')
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const passport = require('passport');
 
 const db = require('./src/configs/dbConfig');
 const route = require('./src/routes');
-const errorHandler = require('./src/middlewares/errorHandler')
-require('./src/services/passport')
-const scheduler = require('./src/services/schedule')
+const errorHandler = require('./src/middlewares/errorHandler');
+require('./src/services/passport');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Connect to database
 db.connect(process.env.MONGO_URI);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method')); // Override method in HTML(only GET & POST)
-app.use(cookieParser())
-app.use(session({
+app.use(cookieParser());
+app.use(
+  session({
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
     cookie: {
-        secure: process.env.NODE_ENV === 'production' ? true : false,
-        httpOnly: true,
-        sameSite: true,
-        maxAge: 600000
-    }
-}))
+      secure: process.env.NODE_ENV === 'production' ? true : false,
+      httpOnly: true,
+      sameSite: true,
+      maxAge: 600000,
+    },
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
-app.set('trust proxy', 1)
+app.set('trust proxy', 1);
 
 // Config handlebars
 app.engine('hbs', handlebars.engine({ extname: '.hbs' }));
@@ -49,13 +49,7 @@ app.set('views', path.join(__dirname, 'src/views'));
 //     next()
 // })
 
-// route init
 route(app);
-
-// Error handler
-errorHandler(app)
-
-// config scheduler
-scheduler.crawlChapPresent()
+errorHandler(app);
 
 app.listen(port, () => console.log(`App listening on port ${port}`));

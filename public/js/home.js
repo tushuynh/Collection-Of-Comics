@@ -11,7 +11,7 @@ const btnEnd = document.getElementById('btnEnd');
 const btnBlacklist = document.getElementById('btnBlacklist');
 const btnDrop = document.getElementById('btnDrop');
 const txtSearch = document.getElementById('searchTxt');
-let typePresent
+let typePresent;
 
 // Modal add
 const btnAdd = document.getElementById('btnAdd');
@@ -32,280 +32,293 @@ const deleteForm = document.querySelector('.delete-modal .form');
 const cardContainer = document.querySelector('.card-container');
 const cardChilren = cardContainer.children;
 const arrCard = getArrCard();
-let curCard = [...arrCard]
+let curCard = [...arrCard];
 
 // Filter
 const filter = document.querySelector('.filter');
 filter.addEventListener('change', () => {
-    let filterCard
-    switch(filter.selectedIndex) {
-        case 0:
-            filterCard = curCard.sort((currentCard, nextCard) => {
-                const current = currentCard.querySelector('.last-read .primary-text').innerHTML
-                const next = nextCard.querySelector('.last-read .primary-text').innerHTML
-                const dateCurrentCard = new Date(current.split('/').reverse().join('-'))
-                const dateNextCard = new Date(next.split('/').reverse().join('-'))
+  let filterCard;
+  switch (filter.selectedIndex) {
+    case 0:
+      filterCard = curCard.sort((currentCard, nextCard) => {
+        const current = currentCard.querySelector(
+          '.last-read .primary-text'
+        ).innerHTML;
+        const next = nextCard.querySelector(
+          '.last-read .primary-text'
+        ).innerHTML;
+        const dateCurrentCard = new Date(
+          current.split('/').reverse().join('-')
+        );
+        const dateNextCard = new Date(next.split('/').reverse().join('-'));
 
-                return dateCurrentCard - dateNextCard
-            })
-            renderComics(filterCard)
-            break;
+        return dateCurrentCard - dateNextCard;
+      });
+      renderComics(filterCard);
+      break;
 
-        case 1:
-            filterCard = curCard.sort((currentCard, nextCard) => {
-                const current = currentCard.querySelector('.last-read .primary-text').innerHTML
-                const next = nextCard.querySelector('.last-read .primary-text').innerHTML
-                const dateCurrentCard = new Date(current.split('/').reverse().join('-'))
-                const dateNextCard = new Date(next.split('/').reverse().join('-'))
+    case 1:
+      filterCard = curCard.sort((currentCard, nextCard) => {
+        const current = currentCard.querySelector(
+          '.last-read .primary-text'
+        ).innerHTML;
+        const next = nextCard.querySelector(
+          '.last-read .primary-text'
+        ).innerHTML;
+        const dateCurrentCard = new Date(
+          current.split('/').reverse().join('-')
+        );
+        const dateNextCard = new Date(next.split('/').reverse().join('-'));
 
-                return dateNextCard - dateCurrentCard
-            })
-            renderComics(filterCard)
-            break;
+        return dateNextCard - dateCurrentCard;
+      });
+      renderComics(filterCard);
+      break;
 
-        case 2:
-            filterCard = curCard.sort((currentCard, nextCard) => {
-                const currentCardChap = {
-                    chapRead: currentCard.querySelector('.chapRead .primary-text').innerHTML,
-                    chapPresent: currentCard.querySelector('.chapPresent .primary-text').innerHTML
-                }
-                const nextCardChap = {
-                    chapRead: nextCard.querySelector('.chapRead .primary-text').innerHTML,
-                    chapPresent: nextCard.querySelector('.chapPresent .primary-text').innerHTML
-                }
+    case 2:
+      filterCard = curCard.sort((currentCard, nextCard) => {
+        const currentCardChap = {
+          chapRead: currentCard.querySelector('.chapRead .primary-text')
+            .innerHTML,
+          chapPresent: currentCard.querySelector('.chapPresent .primary-text')
+            .innerHTML,
+        };
+        const nextCardChap = {
+          chapRead: nextCard.querySelector('.chapRead .primary-text').innerHTML,
+          chapPresent: nextCard.querySelector('.chapPresent .primary-text')
+            .innerHTML,
+        };
 
-                const unReadChapCurrentCard = currentCardChap.chapPresent - currentCardChap.chapRead
-                const unReadChapNextCard = nextCardChap.chapPresent - nextCardChap.chapRead 
-                return unReadChapCurrentCard - unReadChapNextCard
-            })
-            renderComics(filterCard)
-            break;
+        const unReadChapCurrentCard =
+          currentCardChap.chapPresent - currentCardChap.chapRead;
+        const unReadChapNextCard =
+          nextCardChap.chapPresent - nextCardChap.chapRead;
+        return unReadChapCurrentCard - unReadChapNextCard;
+      });
+      renderComics(filterCard);
+      break;
 
-        case 3:
-            filterCard = curCard.sort((currentCard, nextCard) => {
-                const currentCardChap = {
-                    chapRead: currentCard.querySelector('.chapRead .primary-text').innerHTML,
-                    chapPresent: currentCard.querySelector('.chapPresent .primary-text').innerHTML
-                }
-                const nextCardChap = {
-                    chapRead: nextCard.querySelector('.chapRead .primary-text').innerHTML,
-                    chapPresent: nextCard.querySelector('.chapPresent .primary-text').innerHTML
-                }
+    case 3:
+      filterCard = curCard.sort((currentCard, nextCard) => {
+        const currentCardChap = {
+          chapRead: currentCard.querySelector('.chapRead .primary-text')
+            .innerHTML,
+          chapPresent: currentCard.querySelector('.chapPresent .primary-text')
+            .innerHTML,
+        };
+        const nextCardChap = {
+          chapRead: nextCard.querySelector('.chapRead .primary-text').innerHTML,
+          chapPresent: nextCard.querySelector('.chapPresent .primary-text')
+            .innerHTML,
+        };
 
-                const unReadChapCurrentCard = currentCardChap.chapPresent - currentCardChap.chapRead
-                const unReadChapNextCard = nextCardChap.chapPresent - nextCardChap.chapRead 
-                return unReadChapNextCard - unReadChapCurrentCard
-            })
-            renderComics(filterCard)
-            break;
+        const unReadChapCurrentCard =
+          currentCardChap.chapPresent - currentCardChap.chapRead;
+        const unReadChapNextCard =
+          nextCardChap.chapPresent - nextCardChap.chapRead;
+        return unReadChapNextCard - unReadChapCurrentCard;
+      });
+      renderComics(filterCard);
+      break;
 
-        default:
-            break;
-    }
-})
+    default:
+      break;
+  }
+});
 
 function getArrCard() {
-    let arrCard = [...cardChilren];
+  let arrCard = [...cardChilren];
 
-    arrCard.forEach((card) => {
-        // Add event double click for button edit for comic card
-        const btnEdit = card.querySelector('.btn-edit');
-        btnEdit.addEventListener('click', () => {
-            editModal.classList.add('modal-show');
+  arrCard.forEach((card) => {
+    // Add event double click for button edit for comic card
+    const btnEdit = card.querySelector('.btn-edit');
+    btnEdit.addEventListener('click', () => {
+      editModal.classList.add('modal-show');
 
-            editForm.name.value = card.querySelector('.card-title').innerHTML;
-            editForm.chapRead.value = card.querySelector(
-                '.chapRead .primary-text'
-            ).innerHTML;
-            editForm.image.value = card
-                .querySelector('.btn-edit')
-                .getAttribute('src');
-            editForm.imgEditModal.src = card
-                .querySelector('.btn-edit')
-                .getAttribute('src');
-            editForm.type.value = card.getAttribute('data-type');
-            editForm.status.value = card.getAttribute('data-status');
+      editForm.name.value = card.querySelector('.card-title').innerHTML;
+      editForm.chapRead.value = card.querySelector(
+        '.chapRead .primary-text'
+      ).innerHTML;
+      editForm.image.value = card
+        .querySelector('.btn-edit')
+        .getAttribute('src');
+      editForm.imgEditModal.src = card
+        .querySelector('.btn-edit')
+        .getAttribute('src');
+      editForm.type.value = card.getAttribute('data-type');
+      editForm.status.value = card.getAttribute('data-status');
 
-            editForm.setAttribute(
-                'action',
-                `/comic/update/${card.getAttribute('data-id')}?_method=PUT`
-            );
-            editForm.setAttribute('method', 'POST');
-        });
-
-        // Add event click comic's name redirect to page comic
-        const comicName = card.querySelector('.comicName')
-        comicName.setAttribute(
-            'href',
-            getComicURL(comicName.firstChild.innerHTML)
-        )
-
-        // Add event click for button delete for comic card
-        const btnDelete = card.querySelector('.btn-delete');
-        btnDelete.addEventListener('click', () => {
-            deleteForm.setAttribute(
-                'action',
-                `/comic/delete/${card.getAttribute('data-id')}?_method=DELETE`
-            );
-            deleteForm.setAttribute('method', 'POST');
-
-            if (
-                confirm('Are you sure you want to delete this comic?') == true
-            ) {
-                deleteForm.submit();
-            }
-        });
+      editForm.setAttribute(
+        'action',
+        `/comic/update/${card.getAttribute('data-id')}?_method=PUT`
+      );
+      editForm.setAttribute('method', 'POST');
     });
 
-    return arrCard;
+    // Add event click comic's name redirect to page comic
+    const comicName = card.querySelector('.comicName');
+    comicName.setAttribute('href', getComicURL(comicName.firstChild.innerHTML));
+
+    // Add event click for button delete for comic card
+    const btnDelete = card.querySelector('.btn-delete');
+    btnDelete.addEventListener('click', () => {
+      deleteForm.setAttribute(
+        'action',
+        `/comic/delete/${card.getAttribute('data-id')}?_method=DELETE`
+      );
+      deleteForm.setAttribute('method', 'POST');
+
+      if (confirm('Are you sure you want to delete this comic?') == true) {
+        deleteForm.submit();
+      }
+    });
+  });
+
+  return arrCard;
 }
 
 btnMenu.onclick = function () {
-    sidebar.classList.toggle('active');
+  sidebar.classList.toggle('active');
 };
 
 // Click add comic button
 btnAdd.onclick = function () {
-    addModal.classList.toggle('modal-show');
+  addModal.classList.toggle('modal-show');
 
-    addModalForm.name.value = '';
-    addModalForm.chap.value = '';
-    addModalForm.image.value = '';
-    addModalForm.imgAddModal.src = '';
-    if (img.getAttribute('src') == '') img.style.visibility = 'hidden';
+  addModalForm.name.value = '';
+  addModalForm.chap.value = '';
+  addModalForm.image.value = '';
+  addModalForm.imgAddModal.src = '';
+  if (img.getAttribute('src') == '') img.style.visibility = 'hidden';
 };
 
 // User click anywhere outside the modal
 window.addEventListener('click', (e) => {
-    if (e.target === addModal) {
-        addModal.classList.remove('modal-show');
-    }
-    if (e.target == editModal) {
-        // window.location = '/comic';
-        editModal.classList.remove('modal-show');
-    }
+  if (e.target === addModal) {
+    addModal.classList.remove('modal-show');
+  }
+  if (e.target == editModal) {
+    // window.location = '/comic';
+    editModal.classList.remove('modal-show');
+  }
 });
 
 // Change text link img in add modal
 txtImg.addEventListener('change', () => {
-    if (txtImg.value != '') {
-        img.style.visibility = 'visible';
-        addModalForm.imgAddModal.src = txtImg.value;
-    } else {
-        img.style.visibility = 'hidden';
-    }
+  if (txtImg.value != '') {
+    img.style.visibility = 'visible';
+    addModalForm.imgAddModal.src = txtImg.value;
+  } else {
+    img.style.visibility = 'hidden';
+  }
 });
 
 // clear all card in content
 function clearCardInContent() {
-    while (cardContainer.firstChild) cardContainer.firstChild.remove();
+  while (cardContainer.firstChild) cardContainer.firstChild.remove();
 }
 
 // render comics to content
 function renderComics(arrComics) {
-    clearCardInContent();
+  clearCardInContent();
 
-    arrComics.forEach((card) => {
-        cardContainer.appendChild(card);
-    });
+  arrComics.forEach((card) => {
+    cardContainer.appendChild(card);
+  });
 }
 
 // Add event click for all buttons in menu sidebar
 function addEventListenerForButton(arrButton) {
-    arrButton.forEach((button) => {
-        button.addEventListener('click', () => {
-            const type = button.children[1].innerHTML;
-            if (typePresent != null)
-                typePresent.removeAttribute('id')
-            button.setAttribute(
-                'id',
-                'select-type'
-            )
-            typePresent = button
-            filter.selectedIndex = 0
-            switch (type) {
-                case 'Manhwa':
-                case 'Manhua':
-                case 'Manga':
-                case 'Others':
-                    curCard = arrCard.filter((card) => {
-                        return (
-                            card.getAttribute('data-type') === type &&
-                            (card.getAttribute('data-status') === 'Hot' ||
-                                card.getAttribute('data-status') === 'None')
-                        );
-                    });
-                    break;
+  arrButton.forEach((button) => {
+    button.addEventListener('click', () => {
+      const type = button.children[1].innerHTML;
+      if (typePresent != null) typePresent.removeAttribute('id');
+      button.setAttribute('id', 'select-type');
+      typePresent = button;
+      filter.selectedIndex = 0;
+      switch (type) {
+        case 'Manhwa':
+        case 'Manhua':
+        case 'Manga':
+        case 'Others':
+          curCard = arrCard.filter((card) => {
+            return (
+              card.getAttribute('data-type') === type &&
+              (card.getAttribute('data-status') === 'Hot' ||
+                card.getAttribute('data-status') === 'None')
+            );
+          });
+          break;
 
-                case 'Hot':
-                case 'End':
-                case 'Blacklist':
-                case 'Drop':
-                    curCard = arrCard.filter((card) => {
-                        return card.getAttribute('data-status') === type;
-                    });
-                    break;
-                default:
-                    curCard = [...arrCard];
-                    break;
-            }
+        case 'Hot':
+        case 'End':
+        case 'Blacklist':
+        case 'Drop':
+          curCard = arrCard.filter((card) => {
+            return card.getAttribute('data-status') === type;
+          });
+          break;
+        default:
+          curCard = [...arrCard];
+          break;
+      }
 
-            renderComics(curCard);
-        });
+      renderComics(curCard);
     });
+  });
 }
 addEventListenerForButton([
-    btnAll,
-    btnManhwa,
-    btnManhua,
-    btnManga,
-    btnOthers,
-    btnHot,
-    btnEnd,
-    btnBlacklist,
-    btnDrop,
+  btnAll,
+  btnManhwa,
+  btnManhua,
+  btnManga,
+  btnOthers,
+  btnHot,
+  btnEnd,
+  btnBlacklist,
+  btnDrop,
 ]);
 
 // Add event text search change
 txtSearch.addEventListener('input', () => {
-    clearCardInContent()
+  clearCardInContent();
 
-    let arrComics = arrCard.filter(card => {
-        const name = card.querySelector('.card-title').innerHTML
-        return removeAccents(name.toUpperCase()).includes(
-            removeAccents(txtSearch.value.toUpperCase())
-        );
-    })
+  let arrComics = arrCard.filter((card) => {
+    const name = card.querySelector('.card-title').innerHTML;
+    return removeAccents(name.toUpperCase()).includes(
+      removeAccents(txtSearch.value.toUpperCase())
+    );
+  });
 
-    renderComics(arrComics)
+  renderComics(arrComics);
 });
 
 function removeAccents(str) {
-    var AccentsMap = [
-        'aàảãáạăằẳẵắặâầẩẫấậ',
-        'AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ',
-        'dđ',
-        'DĐ',
-        'eèẻẽéẹêềểễếệ',
-        'EÈẺẼÉẸÊỀỂỄẾỆ',
-        'iìỉĩíị',
-        'IÌỈĨÍỊ',
-        'oòỏõóọôồổỗốộơờởỡớợ',
-        'OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ',
-        'uùủũúụưừửữứự',
-        'UÙỦŨÚỤƯỪỬỮỨỰ',
-        'yỳỷỹýỵ',
-        'YỲỶỸÝỴ',
-    ];
-    for (var i = 0; i < AccentsMap.length; i++) {
-        var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
-        var char = AccentsMap[i][0];
-        str = str.replace(re, char);
-    }
-    return str;
+  var AccentsMap = [
+    'aàảãáạăằẳẵắặâầẩẫấậ',
+    'AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ',
+    'dđ',
+    'DĐ',
+    'eèẻẽéẹêềểễếệ',
+    'EÈẺẼÉẸÊỀỂỄẾỆ',
+    'iìỉĩíị',
+    'IÌỈĨÍỊ',
+    'oòỏõóọôồổỗốộơờởỡớợ',
+    'OÒỎÕÓỌÔỒỔỖỐỘƠỜỞỠỚỢ',
+    'uùủũúụưừửữứự',
+    'UÙỦŨÚỤƯỪỬỮỨỰ',
+    'yỳỷỹýỵ',
+    'YỲỶỸÝỴ',
+  ];
+  for (var i = 0; i < AccentsMap.length; i++) {
+    var re = new RegExp('[' + AccentsMap[i].substr(1) + ']', 'g');
+    var char = AccentsMap[i][0];
+    str = str.replace(re, char);
+  }
+  return str;
 }
 
 function getComicURL(comicName) {
-    const paramUrl = removeAccents(comicName.toUpperCase()).split(' ').join('-')
-    return 'https://www.nettruyenin.com/truyen-tranh/' + paramUrl
+  const paramUrl = removeAccents(comicName.toLowerCase()).split(' ').join('-');
+  return 'https://nhattruyentr.com/truyen-tranh/' + paramUrl;
 }
