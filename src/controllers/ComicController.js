@@ -1,8 +1,9 @@
+const axios = require('axios');
+const cheerio = require('cheerio');
+
 const comicSchema = require('../models/comic');
 const { comicsMongooseToObject } = require('../utils/mongoose');
 const { removeAccents } = require('../utils/helper');
-const axios = require('axios');
-const cheerio = require('cheerio');
 
 class ComicController {
   // ------------------------------------------------------------------------- [GET]
@@ -51,10 +52,10 @@ class ComicController {
           const $ = cheerio.load(response.data);
 
           let chap = $('.list-chapter a').first().text();
-          chap = chap.split(' ')[1];
+          chap = chap.split(' ')[1].trim();
           // const imageURL = $('.col-image img').attr('src');
 
-          if (chap) {
+          if (Number(chap) && chap !== comic.chapPresent) {
             await comicSchema.updateOne(
               {
                 name: comic.name,
@@ -64,11 +65,6 @@ class ComicController {
                 // image: imageURL,
               }
             );
-          } else {
-            errorCrawlComics.push({
-              comicName,
-              url,
-            });
           }
 
           return { comicName, chap };
