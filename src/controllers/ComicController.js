@@ -1,5 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const https = require('https');
 
 const comicSchema = require('../models/comic');
 const { comicsMongooseToObject } = require('../utils/mongoose');
@@ -46,9 +47,12 @@ class ComicController {
           .split(' ')
           .join('-');
         const url = process.env.WEB_CRAWL_URL + comicName;
+        const httpsAgent = new https.Agent({
+          rejectUnauthorized: false,
+        });
 
         try {
-          const response = await axios.get(url);
+          const response = await axios.get(url, { httpsAgent });
           const $ = cheerio.load(response.data);
 
           let chap = $('.list-chapter a').first().text();
@@ -72,6 +76,7 @@ class ComicController {
           return errorCrawlComics.push({
             comicName,
             url,
+            message: error?.message || '',
           });
         }
       })
@@ -79,9 +84,9 @@ class ComicController {
 
     return res.json({
       message: 'Craw new chapter of all comic finished',
-      errorCrawComics: errorCrawlComics.map((comic) => {
-        const errorMessage = `[Comic crawl failed] - Comic's name: ${comic.comicName} - url: ${comic.url}`;
-        console.log(errorMessage);
+      errorCrawComics: errorCrawlComics.map((error) => {
+        const errorMessage = `[Comic crawl failed] - Comic's name: ${error.comicName} - url: ${error.url} - message: ${error?.message}`;
+        console.error(errorMessage);
         return errorMessage;
       }),
     });
