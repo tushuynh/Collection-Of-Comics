@@ -1,6 +1,5 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
-const https = require('https');
 
 const comicSchema = require('../models/comic');
 const { comicsMongooseToObject } = require('../utils/mongoose');
@@ -47,19 +46,22 @@ class ComicController {
           .split(' ')
           .join('-');
         const url = process.env.WEB_CRAWL_URL + comicName;
-        const httpsAgent = new https.Agent({
-          rejectUnauthorized: false,
-        });
 
         try {
-          const response = await axios.get(url, { httpsAgent });
+          const response = await axios.get(url);
           const $ = cheerio.load(response.data);
 
-          let chap = $('.list-chapter a').first().text();
-          chap = chap.split(' ')[1].trim();
+          let chap = $('#list-chapter-comic a span').first().text();
+          chap = chap.split(' ')[1]?.trim();
           // const imageURL = $('.col-image img').attr('src');
 
-          if (Number(chap) && chap !== comic.chapPresent) {
+          if (!chap) {
+            errorCrawlComics.push({
+              comicName,
+              url,
+              message: 'Can not get new chapter',
+            });
+          } else if (Number(chap) && chap !== comic.chapPresent) {
             await comicSchema.updateOne(
               {
                 name: comic.name,
@@ -85,7 +87,7 @@ class ComicController {
     return res.json({
       message: 'Craw new chapter of all comic finished',
       errorCrawComics: errorCrawlComics.map((error) => {
-        const errorMessage = `[Comic crawl failed] - Comic's name: ${error.comicName} - url: ${error.url} - message: ${error?.message}`;
+        const errorMessage = `[Comic crawl failed] - url: ${error.url} - message: ${error?.message}`;
         console.error(errorMessage);
         return errorMessage;
       }),
