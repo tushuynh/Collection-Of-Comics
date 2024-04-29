@@ -149,7 +149,7 @@ class ComicController {
     const comicName = removeAccents(comic.name.toLowerCase())
       .split(' ')
       .join('-');
-    const url = process.env.WEB_CRAWL_URL + comicName;
+    const url = 'http://doctruyenonline.vn/truyen-tranh/' + comicName;
 
     try {
       // const response = await axios.get(url)
