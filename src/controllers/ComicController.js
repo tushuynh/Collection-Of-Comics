@@ -137,6 +137,66 @@ class ComicController {
     });
   }
 
+  // [GET] /testCrawl
+  // Test crawl new chapter on production
+  async testCrawl(req, res, next) {
+    const errorCrawlComics = [];
+    const comic = {
+      name: 'Bắc Kiếm Giang Hồ',
+      chapPresent: '187',
+    };
+
+    const comicName = removeAccents(comic.name.toLowerCase())
+      .split(' ')
+      .join('-');
+    const url = process.env.WEB_CRAWL_URL + comicName;
+
+    try {
+      const response = await axios.get(url);
+      const $ = cheerio.load(response.data);
+
+      let chap = $('#list-chapter-comic a span').first().text();
+      chap = chap.split(' ')[1]?.trim();
+      // const imageURL = $('.col-image img').attr('src');
+
+      if (!chap) {
+        errorCrawlComics.push({
+          comicName,
+          url,
+          message: 'Can not get new chapter',
+        });
+      } else if (Number(chap) && chap !== comic.chapPresent) {
+        await comicSchema.updateOne(
+          {
+            name: comic.name,
+          },
+          {
+            chapPresent: chap,
+            // image: imageURL,
+          }
+        );
+      }
+    } catch (error) {
+      console.error(`Can not crawl new chapter`);
+      console.error(error);
+      console.error(`Can not crawl new chapter`);
+      errorCrawlComics.push({
+        comicName,
+        url,
+        message: error?.message || 'Something went wrong!',
+      });
+    }
+
+    return res.json({
+      message: 'Craw new chapter of all comic finished',
+      errorCrawComics: errorCrawlComics.map((error) => {
+        const errorMessage = `[Comic crawl failed] - url: ${error.url} - message: ${error?.message}`;
+        // console.error(errorMessage);
+        return errorMessage;
+      }),
+    });
+  }
+
   // ---------------------------------------------------------------- [POST]
   // [POST] /comics
   createComic(req, res, next) {
