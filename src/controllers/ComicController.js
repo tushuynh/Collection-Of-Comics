@@ -156,6 +156,7 @@ class ComicController {
       const response = await axios.get(url, {
         withCredentials: false,
         headers: {
+          host: 'doctruyenonline.vn',
           'Access-Control-Allow-Origin': '*',
           'User-Agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
