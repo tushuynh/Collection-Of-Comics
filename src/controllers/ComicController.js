@@ -154,7 +154,7 @@ class ComicController {
     try {
       // const response = await axios.get(url)
       const response = await axios.get(url, {
-        rejectUnauthorized: false,
+        withCredentials: false,
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
