@@ -152,7 +152,13 @@ class ComicController {
     const url = process.env.WEB_CRAWL_URL + comicName;
 
     try {
-      const response = await axios.get(url);
+      // const response = await axios.get(url)
+      const response = await axios.get(url, {
+        rejectUnauthorized: false,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
       const $ = cheerio.load(response.data);
 
       let chap = $('#list-chapter-comic a span').first().text();
