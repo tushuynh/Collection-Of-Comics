@@ -9,7 +9,7 @@ class ComicController {
   // ------------------------------------------------------------------------- [GET]
   // [GET] /comics
   // Home page show all comics
-  showComics(req, res, next) {
+  showHomepage(req, res, next) {
     comicSchema
       .find({
         userId: req.cookies.userId,
@@ -34,55 +34,98 @@ class ComicController {
       .catch((err) => res.json(err));
   }
 
-  // [GET] /crawNewChapter
+  // [GET] /updateNewChapter
   // Craw to update new chapter of all comics
-  async crawNewChapter(req, res, next) {
+  async updateNewChapter(req, res, next) {
     const errorCrawlComics = [];
 
     const comics = await comicSchema.find();
-    await Promise.all(
-      comics.map(async (comic) => {
-        const comicName = removeAccents(comic.name.toLowerCase())
-          .split(' ')
-          .join('-');
-        const url = process.env.WEB_CRAWL_URL + comicName;
 
-        try {
-          const response = await axios.get(url);
-          const $ = cheerio.load(response.data);
+    // Parallel
+    // await Promise.all(
+    //   comics.map(async (comic) => {
+    //     const comicName = removeAccents(comic.name.toLowerCase())
+    //       .split(' ')
+    //       .join('-');
+    //     const url = process.env.WEB_CRAWL_URL + comicName;
 
-          let chap = $('#list-chapter-comic a span').first().text();
-          chap = chap.split(' ')[1]?.trim();
-          // const imageURL = $('.col-image img').attr('src');
+    //     try {
+    //       const response = await axios.get(url);
+    //       const $ = cheerio.load(response.data);
 
-          if (!chap) {
-            errorCrawlComics.push({
-              comicName,
-              url,
-              message: 'Can not get new chapter',
-            });
-          } else if (Number(chap) && chap !== comic.chapPresent) {
-            await comicSchema.updateOne(
-              {
-                name: comic.name,
-              },
-              {
-                chapPresent: chap,
-                // image: imageURL,
-              }
-            );
-          }
+    //       let chap = $('#list-chapter-comic a span').first().text();
+    //       chap = chap.split(' ')[1]?.trim();
+    //       // const imageURL = $('.col-image img').attr('src');
 
-          return { comicName, chap };
-        } catch (error) {
-          return errorCrawlComics.push({
+    //       if (!chap) {
+    //         errorCrawlComics.push({
+    //           comicName,
+    //           url,
+    //           message: 'Can not get new chapter',
+    //         });
+    //       } else if (Number(chap) && chap !== comic.chapPresent) {
+    //         await comicSchema.updateOne(
+    //           {
+    //             name: comic.name,
+    //           },
+    //           {
+    //             chapPresent: chap,
+    //             // image: imageURL,
+    //           }
+    //         );
+    //       }
+
+    //       return { comicName, chap };
+    //     } catch (error) {
+    //       return errorCrawlComics.push({
+    //         comicName,
+    //         url,
+    //         message: error?.message || '',
+    //       });
+    //     }
+    //   })
+    // );
+
+    // Sequence (handle for rate limit)
+    for (const comic of comics) {
+      const comicName = removeAccents(comic.name.toLowerCase())
+        .split(' ')
+        .join('-');
+      const url = process.env.WEB_CRAWL_URL + comicName;
+
+      try {
+        const response = await axios.get(url);
+        const $ = cheerio.load(response.data);
+
+        let chap = $('#list-chapter-comic a span').first().text();
+        chap = chap.split(' ')[1]?.trim();
+        // const imageURL = $('.col-image img').attr('src');
+
+        if (!chap) {
+          errorCrawlComics.push({
             comicName,
             url,
-            message: error?.message || '',
+            message: 'Can not get new chapter',
           });
+        } else if (Number(chap) && chap !== comic.chapPresent) {
+          await comicSchema.updateOne(
+            {
+              name: comic.name,
+            },
+            {
+              chapPresent: chap,
+              // image: imageURL,
+            }
+          );
         }
-      })
-    );
+      } catch (error) {
+        errorCrawlComics.push({
+          comicName,
+          url,
+          message: error?.message || 'Something went wrong!',
+        });
+      }
+    }
 
     return res.json({
       message: 'Craw new chapter of all comic finished',
@@ -95,7 +138,7 @@ class ComicController {
   }
 
   // ---------------------------------------------------------------- [POST]
-  // [POST] /comics/create
+  // [POST] /comics
   createComic(req, res, next) {
     req.body.userId = req.cookies.userId;
     const comic = comicSchema(req.body);
@@ -106,7 +149,7 @@ class ComicController {
   }
 
   // ---------------------------------------------------------------- [PUT]
-  // [PUT] /comics/update/:_id
+  // [PUT] /comics/:_id
   updateComic(req, res, next) {
     const { _id } = req.params;
     req.body.lastRead = new Date();
@@ -117,7 +160,7 @@ class ComicController {
   }
 
   // ---------------------------------------------------------------- [DELETE]
-  // [DELETE] /comics/delete/:_id
+  // [DELETE] /comics/:_id
   deleteComic(req, res, next) {
     const { _id } = req.params;
     comicSchema

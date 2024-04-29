@@ -3,17 +3,17 @@ const router = express.Router();
 const comicController = require('../controllers/ComicController');
 
 // ---------------------------------------------------------------- [GET]
-router.get('/crawNewChapter', comicController.crawNewChapter);
+router.get('/updateNewChapter', comicController.updateNewChapter);
 router.get('/getComics', comicController.getComics);
-router.get('/', comicController.showComics);
+router.get('/', comicController.showHomepage);
 
 // ---------------------------------------------------------------- [POST]
-router.post('/create', comicController.createComic);
+router.post('/', comicController.createComic);
 
 // ---------------------------------------------------------------- [PUT]
-router.put('/update/:_id', comicController.updateComic);
+router.put('/:_id', comicController.updateComic);
 
 // ---------------------------------------------------------------- [DELETE]
-router.delete('/delete/:_id', comicController.deleteComic);
+router.delete('/:_id', comicController.deleteComic);
 
 module.exports = router;

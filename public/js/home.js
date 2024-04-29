@@ -150,7 +150,7 @@ function getArrCard() {
 
       editForm.setAttribute(
         'action',
-        `/comic/update/${card.getAttribute('data-id')}?_method=PUT`
+        `/comic/${card.getAttribute('data-id')}?_method=PUT`
       );
       editForm.setAttribute('method', 'POST');
     });
@@ -164,7 +164,7 @@ function getArrCard() {
     btnDelete.addEventListener('click', () => {
       deleteForm.setAttribute(
         'action',
-        `/comic/delete/${card.getAttribute('data-id')}?_method=DELETE`
+        `/comic/${card.getAttribute('data-id')}?_method=DELETE`
       );
       deleteForm.setAttribute('method', 'POST');
 
