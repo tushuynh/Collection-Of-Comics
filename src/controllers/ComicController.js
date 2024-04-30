@@ -1,9 +1,9 @@
-const axios = require('axios');
 const cheerio = require('cheerio');
 
 const comicSchema = require('../models/comic');
 const { comicsMongooseToObject } = require('../utils/mongoose');
 const { removeAccents } = require('../utils/helper');
+const { httpService } = require('../services/httpService');
 
 class ComicController {
 	// ------------------------------------------------------------------------- [GET]
@@ -41,91 +41,89 @@ class ComicController {
 
 		const comics = await comicSchema.find();
 
-		// Parallel
-		// await Promise.all(
-		//   comics.map(async (comic) => {
-		//     const comicName = removeAccents(comic.name.toLowerCase())
-		//       .split(' ')
-		//       .join('-');
-		//     const url = process.env.WEB_CRAWL_URL + comicName;
+		await Promise.all(
+			comics.map(async (comic) => {
+				const comicName = removeAccents(comic.name.toLowerCase())
+					.split(' ')
+					.join('-');
+				const url = process.env.WEB_CRAWL_URL + comicName;
 
-		//     try {
-		//       const response = await axios.get(url);
-		//       const $ = cheerio.load(response.data);
+				try {
+					const response = await httpService.get(url);
+					const $ = cheerio.load(response.data);
 
-		//       let chap = $('#list-chapter-comic a span').first().text();
-		//       chap = chap.split(' ')[1]?.trim();
-		//       // const imageURL = $('.col-image img').attr('src');
+					let chap = $('.col-xs-5 a').first().text();
+					chap = chap.split(' ')[1]?.trim();
+					// const imageURL = $('.col-image img').attr('src');
 
-		//       if (!chap) {
-		//         errorCrawlComics.push({
-		//           comicName,
-		//           url,
-		//           message: 'Can not get new chapter',
-		//         });
-		//       } else if (Number(chap) && chap !== comic.chapPresent) {
-		//         await comicSchema.updateOne(
-		//           {
-		//             name: comic.name,
-		//           },
-		//           {
-		//             chapPresent: chap,
-		//             // image: imageURL,
-		//           }
-		//         );
-		//       }
+					if (!chap) {
+						errorCrawlComics.push({
+							comicName,
+							url,
+							message: 'Can not get new chapter',
+						});
+					} else if (Number(chap) && chap !== comic.chapPresent) {
+						await comicSchema.updateOne(
+							{
+								name: comic.name,
+							},
+							{
+								chapPresent: chap,
+								// image: imageURL,
+							}
+						);
+					}
 
-		//       return { comicName, chap };
-		//     } catch (error) {
-		//       return errorCrawlComics.push({
-		//         comicName,
-		//         url,
-		//         message: error?.message || '',
-		//       });
-		//     }
-		//   })
-		// );
-
-		// Sequence (handle for rate limit)
-		for (const comic of comics) {
-			const comicName = removeAccents(comic.name.toLowerCase())
-				.split(' ')
-				.join('-');
-			const url = process.env.WEB_CRAWL_URL + comicName;
-
-			try {
-				const response = await axios.get(url);
-				const $ = cheerio.load(response.data);
-
-				let chap = $('#list-chapter-comic a span').first().text();
-				chap = chap.split(' ')[1]?.trim();
-				// const imageURL = $('.col-image img').attr('src');
-
-				if (!chap) {
-					errorCrawlComics.push({
+					return { comicName, chap };
+				} catch (error) {
+					return errorCrawlComics.push({
 						comicName,
 						url,
-						message: 'Can not get new chapter',
+						message: error?.message || '',
 					});
-				} else if (Number(chap) && chap !== comic.chapPresent) {
-					await comicSchema.updateOne(
-						{
-							name: comic.name,
-						},
-						{
-							chapPresent: chap,
-							// image: imageURL,
-						}
-					);
 				}
-			} catch (error) {
-				errorCrawlComics.push({
-					comicName,
-					url,
-					message: error?.message || 'Something went wrong!',
-				});
-			}
-		}
+			})
+		);
+		// Sequence (handle for rate limit)
+		// for (const comic of comics) {
+		// 	const comicName = removeAccents(comic.name.toLowerCase())
+		// 		.split(' ')
+		// 		.join('-');
+		// 	const url = process.env.WEB_CRAWL_URL + comicName;
+
+		// 	try {
+		// 		const response = await httpService.get(url);
+		// 		const $ = cheerio.load(response.data);
+
+		// 		let chap = $('#list-chapter-comic a span').first().text();
+		// 		chap = chap.split(' ')[1]?.trim();
+		// 		// const imageURL = $('.col-image img').attr('src');
+
+		// 		if (!chap) {
+		// 			errorCrawlComics.push({
+		// 				comicName,
+		// 				url,
+		// 				message: 'Can not get new chapter',
+		// 			});
+		// 		} else if (Number(chap) && chap !== comic.chapPresent) {
+		// 			await comicSchema.updateOne(
+		// 				{
+		// 					name: comic.name,
+		// 				},
+		// 				{
+		// 					chapPresent: chap,
+		// 					// image: imageURL,
+		// 				}
+		// 			);
+		// 		}
+		// 	} catch (error) {
+		// 		errorCrawlComics.push({
+		// 			comicName,
+		// 			url,
+		// 			message: error?.message || 'Something went wrong!',
+		// 		});
+		// 	}
+		// }
 
 		return res.json({
 			message: 'Craw new chapter of all comic finished',
@@ -142,7 +140,7 @@ class ComicController {
 	async testCrawl(req, res, next) {
 		const errorCrawlComics = [];
 		const comic = {
-			name: 'Bắc Kiếm Giang Hồ',
+			name: 'Kiếm Nghịch Thương Khung',
 			chapPresent: '187',
 		};
 
@@ -153,32 +151,10 @@ class ComicController {
 
 		try {
 			// const response = await axios.get(url)
-			const response = await axios.get(url, {
-				withCredentials: false,
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					Referer: 'https://www.google.com/',
-					Accept:
-						'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-					'Accept-Encoding': 'gzip, deflate, br, zstd',
-					'Accept-Language': 'vi,vi-VN;q=0.9,en-US;q=0.8,en;q=0.7',
-					'Content-Type': 'application/x-www-form-urlencoded',
-					'Sec-Ch-Ua':
-						'"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
-					'Sec-Ch-Ua-Mobile': '?0',
-					'Sec-Ch-Ua-Platform': '"Windows"',
-					'Sec-Fetch-Dest': 'document',
-					'Sec-Fetch-Mode': 'navigate',
-					'Sec-Fetch-Site': 'cross-site',
-					'Sec-Fetch-User': '?1',
-					'Upgrade-Insecure-Requests': '1',
-					'User-Agent':
-						'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-				},
-			});
+			const response = await httpService.get(url);
 			const $ = cheerio.load(response.data);
 
-			let chap = $('#list-chapter-comic a span').first().text();
+			let chap = $('.col-xs-5 a').first().text();
 			chap = chap.split(' ')[1]?.trim();
 			// const imageURL = $('.col-image img').attr('src');
 
