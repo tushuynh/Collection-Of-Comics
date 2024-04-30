@@ -3,6 +3,7 @@ const router = express.Router();
 const comicController = require('../controllers/ComicController');
 
 // ---------------------------------------------------------------- [GET]
+router.get('/testCrawl', comicController.testCrawl);
 router.get('/updateNewChapter', comicController.updateNewChapter);
 router.get('/getComics', comicController.getComics);
 router.get('/', comicController.showHomepage);
