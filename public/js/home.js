@@ -140,10 +140,10 @@ function getArrCard() {
         '.chapRead .primary-text'
       ).innerHTML;
       editForm.image.value = card
-        .querySelector('.btn-edit')
+        .querySelector('.cardImage')
         .getAttribute('src');
       editForm.imgEditModal.src = card
-        .querySelector('.btn-edit')
+        .querySelector('.cardImage')
         .getAttribute('src');
       editForm.type.value = card.getAttribute('data-type');
       editForm.status.value = card.getAttribute('data-status');
@@ -158,6 +158,8 @@ function getArrCard() {
     // Add event click comic's name redirect to page comic
     const comicName = card.querySelector('.comicName');
     comicName.setAttribute('href', getComicURL(comicName.firstChild.innerHTML));
+    const comicImage = card.querySelector('.btn-image');
+    comicImage.setAttribute('href', getComicURL(comicName.firstChild.innerHTML));
 
     // Add event click for button delete for comic card
     const btnDelete = card.querySelector('.btn-delete');

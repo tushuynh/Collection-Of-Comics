@@ -484,6 +484,14 @@ header{
     z-index: 2;
 }
 
+.btn-edit{
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    font-size: 1.4rem;
+    z-index: 2;
+}
+
 
 .card-img{
     display: block;

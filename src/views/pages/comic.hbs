@@ -1,8 +1,9 @@
 {{#each comics}}
     <div class='card' data-id='{{this._id}}' data-type='{{this.type}}' data-status='{{this.status}}'>
         <i class='bx bxs-x-circle btn-delete'></i>
+        <i class='bx bxs-info-circle btn-edit'></i>
         <div class='card-img'>
-            <img class='btn-edit' src='{{this.image}}' alt=''/>
+            <a href="" class="btn-image"><img class='cardImage' src='{{this.image}}' alt=''/></a>
         </div>
         <div class='desc'>
             <a href="" class="comicName"><h6 class='card-title'>{{this.name}}</h6></a>
